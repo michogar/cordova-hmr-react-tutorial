@@ -1,0 +1,14 @@
+{
+  "name": "hmr-tutorial",
+  "version": "1.0.0",
+  "description": "Webpack configuration tutorial",
+  "main": "index.js",
+  "author": "Micho García <micho.garcia@geomati.co>",
+  "license": "MIT",
+  "scripts": {
+    "build": "webpack"
+  },
+  "dependencies": {
+    "webpack": "^2.6.1"
+  }
+}
