@@ -5,3 +5,4 @@ pages:
 - Creación del bundle: bundle.md
 - Instalación y configuración de webpack-dev-server: webpackdevserver.md
 - Compilando desde ES6: babel.md
+- Configurando Hot Module Replacement: hrm.md

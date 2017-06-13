@@ -1,6 +1,8 @@
 # Webpack-dev-server
 
-    yarn add webpack-dev-server
+Instalamos `webpack-dev-server`
+
+    yarn add webpack-dev-server --dev
  
 y creamos una orden en los scripts del package.json para ejecutarlo:
 
