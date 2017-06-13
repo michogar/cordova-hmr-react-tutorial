@@ -10,6 +10,15 @@ module.exports = {
         path: path.resolve(__dirname, 'dist/js'),
         filename: '[name].js',
     },
+    module: {
+        rules: [
+            {
+                test: /\.(js|jsx)$/,
+                exclude: [/node_modules/],
+                use: ['babel-loader'],
+            }
+        ],
+    },
     devServer: {
         contentBase: path.join(__dirname, "dist"),
         compress: true,

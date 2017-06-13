@@ -4,3 +4,4 @@ pages:
 - Inicio: index.md
 - Creación del bundle: bundle.md
 - Instalación y configuración de webpack-dev-server: webpackdevserver.md
+- Compilando desde ES6: babel.md
