@@ -1,4 +1,6 @@
-site_name: My Docs
+site_name: HMR Tutorial
 theme: 'material'
 pages:
-- Hot Module Replacement Tutorial: index.md
+- Inicio: index.md
+- Creación del bundle: bundle.md
+- Instalación y configuración de webpack-dev-server: webpackdevserver.md

@@ -4,7 +4,7 @@
 
 class App {
     constructor() {
-        console.log('App ha sido creada')
+        document.getElementById('rootElement').innerHTML = '<span>Mira, ¡¡funciona!!</span>';
     }
 }
 

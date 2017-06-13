@@ -7,7 +7,13 @@ module.exports = {
         main: './src/index.js'
     },
     output: {
-        path: path.resolve(__dirname, 'dist'),
+        path: path.resolve(__dirname, 'dist/js'),
         filename: '[name].js',
-    }
+    },
+    devServer: {
+        contentBase: path.join(__dirname, "dist"),
+        compress: true,
+        port: 3000,
+        publicPath: '/js/'
+    },
 };
