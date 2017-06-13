@@ -1,0 +1,607 @@
+
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="shortcut icon" href="../assets/images/favicon.png">
+      
+      <meta name="generator" content="mkdocs-0.16.3, mkdocs-material-1.6.4">
+    
+    
+      
+        <title>OnsenUI, React, babel-preset-react y react-hot-loader - HMR Tutorial</title>
+      
+    
+    
+      <script src="../assets/javascripts/modernizr-1df76c4e58.js"></script>
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/application-e2807e330f.css">
+      
+    
+    
+      
+        
+        
+        
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+      
+      <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    
+    
+    
+  </head>
+  
+  
+  
+  
+    <body>
+  
+    <svg class="md-svg">
+      <defs>
+        
+        
+      </defs>
+    </svg>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="drawer">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="search">
+    <label class="md-overlay" data-md-component="overlay" for="drawer"></label>
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          <a href=".." title="HMR Tutorial" class="md-icon md-icon--home md-header-nav__button">
+          </a>
+        
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <span class="md-flex__ellipsis md-header-nav__title">
+          
+            
+              
+            
+            OnsenUI, React, babel-preset-react y react-hot-loader
+          
+        </span>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          <label class="md-icon md-icon--search md-header-nav__button" for="search"></label>
+          
+<div class="md-search" data-md-component="search">
+  <label class="md-search__overlay" for="search"></label>
+  <div class="md-search__inner">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" required placeholder="Search" accesskey="s" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query">
+      <label class="md-icon md-search__icon" for="search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset">close</button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta" data-md-lang-result-none="No matching documents" data-md-lang-result-one="1 matching document" data-md-lang-result-other="# matching documents">
+            Type to start searching
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+        
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <div class="md-header-nav__source">
+          
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      
+      
+      <main class="md-main">
+        <div class="md-main__inner md-grid" data-md-component="container">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="drawer">
+    
+      <i class="md-icon md-icon--home md-nav__button"></i>
+    
+    HMR Tutorial
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href=".." title="Inicio" class="md-nav__link">
+      Inicio
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../bundle/" title="Creación del bundle" class="md-nav__link">
+      Creación del bundle
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../webpackdevserver/" title="Instalación y configuración de webpack-dev-server" class="md-nav__link">
+      Instalación y configuración de webpack-dev-server
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../babel/" title="Compilando desde ES6" class="md-nav__link">
+      Compilando desde ES6
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../hrm/" title="Configurando Hot Module Replacement" class="md-nav__link">
+      Configurando Hot Module Replacement
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="toc">
+        OnsenUI, React, babel-preset-react y react-hot-loader
+      </label>
+    
+    <a href="./" title="OnsenUI, React, babel-preset-react y react-hot-loader" class="md-nav__link md-nav__link--active">
+      OnsenUI, React, babel-preset-react y react-hot-loader
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#onsenui" title="OnsenUI" class="md-nav__link">
+    OnsenUI
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#babel-preset-react" title="babel-preset-react" class="md-nav__link">
+    babel-preset-react
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#react-hot-loader" title="react-hot-loader" class="md-nav__link">
+    react-hot-loader
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#referencias" title="Referencias" class="md-nav__link">
+    Referencias
+  </a>
+  
+</li>
+      
+      
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#onsenui" title="OnsenUI" class="md-nav__link">
+    OnsenUI
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#babel-preset-react" title="babel-preset-react" class="md-nav__link">
+    babel-preset-react
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#react-hot-loader" title="react-hot-loader" class="md-nav__link">
+    react-hot-loader
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#referencias" title="Referencias" class="md-nav__link">
+    Referencias
+  </a>
+  
+</li>
+      
+      
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                <h1 id="onsenui-react-babel-preset-react-y-react-hot-loader">OnsenUI, React, babel-preset-react y react-hot-loader</h1>
+<p>El objetivo de este tutorial es configurar un stack de herramientas para desarrollar aplicaciones móvil híbridas, 
+y para ello utilizaremos el framework <a href="https://onsen.io/react/">OnsenUI con React</a>. Este framework dispone de herramientas
+de construcción del proyecto, <a href="https://monaca.io/cli.html">Monaca</a> pero realizaremos nuestra propia configuración para poder
+tener control sobre el entorno de desarrollo y comprender todos los pasos de la configuración de nuestro propio <code>webpack</code>.</p>
+<h2 id="onsenui">OnsenUI</h2>
+<p>Lo primero que haremos será instalar y configurar nuestra plantilla básica con Onsen.</p>
+<pre><code>yarn add onsenui react-onsenui react react-dom
+</code></pre>
+<p>así tendremos todas las librerías necesarias para seguir adelante. Ahora modificaremos el nuestra aplicación para que utilice 
+este framework. Para ello crearemos una <code>App.js</code> de OnsenUI:</p>
+<pre><code>import React, { Component } from 'react';
+import { Page, Button } from 'react-onsenui'
+
+class App extends Component {
+
+    render() {
+        return (
+            &lt;Page&gt;
+                &lt;Button onClick={this.handleClick}&gt;Tap me!&lt;/Button&gt;
+            &lt;/Page&gt;
+        );
+    };
+}
+
+export default App;
+</code></pre>
+<p>y modificaremos nuestro <code>index.js</code> para utilizar nuestra nueva <code>App.js</code>:</p>
+<pre><code>import React from 'react';
+import ReactDOM from 'react-dom';
+import App from './App';
+
+const rootElement = document.getElementById('app');
+
+const render = Component =&gt;
+    ReactDOM.render(
+        &lt;AppContainer&gt;
+            &lt;Component /&gt;
+        &lt;/AppContainer&gt;,
+        rootElement
+    );
+
+render(App);
+
+if (module.hot) {
+    module.hot.accept('./App', () =&gt; render(App));
+}
+</code></pre>
+<p>Al arrancar nuestro <code>webpack-dev-server</code> obtendremos un error:</p>
+<pre><code>&gt; webpack-dev-server --host 0.0.0.0
+
+Project is running at http://0.0.0.0:3000/
+webpack output is served from /js/
+Content not from webpack is served from /home/michogarcia/geomati.co/TMB/dev/cordova-hmr-react-tutorial/dist
+Hash: c0697a3b40373c8d8f34
+Version: webpack 2.6.1
+Time: 1127ms
+  Asset    Size  Chunks                    Chunk Names
+main.js  901 kB       0  [emitted]  [big]  main
+chunk    {0} main.js (main) 305 kB [entry] [rendered]
+ [./node_modules/ansi-regex/index.js] ./~/ansi-regex/index.js 135 bytes {0} [built]
+ [./node_modules/events/events.js] ./~/events/events.js 8.33 kB {0} [built]
+ [./node_modules/html-entities/index.js] ./~/html-entities/index.js 231 bytes {0} [built]
+ [./node_modules/punycode/punycode.js] ./~/punycode/punycode.js 14.7 kB {0} [built]
+ [./node_modules/strip-ansi/index.js] ./~/strip-ansi/index.js 161 bytes {0} [built]
+ [./node_modules/url/url.js] ./~/url/url.js 23.3 kB {0} [built]
+ [./node_modules/url/util.js] ./~/url/util.js 314 bytes {0} [built]
+ [./node_modules/webpack-dev-server/client/index.js?http:/0.0.0.0:3000] (webpack)-dev-server/client?http://0.0.0.0:3000 5.68 kB {0} [built]
+ [./node_modules/webpack-dev-server/client/overlay.js] (webpack)-dev-server/client/overlay.js 3.73 kB {0} [built]
+ [./node_modules/webpack-dev-server/client/socket.js] (webpack)-dev-server/client/socket.js 897 bytes {0} [built]
+ [./node_modules/webpack/hot/dev-server.js] (webpack)/hot/dev-server.js 1.57 kB {0} [built]
+ [./node_modules/webpack/hot/emitter.js] (webpack)/hot/emitter.js 77 bytes {0} [built]
+    [0] multi (webpack)-dev-server/client?http://0.0.0.0:3000 webpack/hot/dev-server ./src/index.js 52 bytes {0} [built]
+ [./node_modules/webpack/hot/log-apply-result.js] (webpack)/hot/log-apply-result.js 1.02 kB {0} [built]
+ [./src/index.js] ./src/index.js 732 bytes {0} [built] [failed] [1 error]
+     + 72 hidden modules
+
+ERROR in ./src/index.js
+Module build failed: SyntaxError: Unexpected token (13:12)
+
+  11 | const render = Component =&gt;
+  12 |     ReactDOM.render(
+&gt; 13 |             &lt;Component /&gt;,
+     |             ^
+  14 |         rootElement
+  15 |     );
+  16 |
+
+ @ multi (webpack)-dev-server/client?http://0.0.0.0:3000 webpack/hot/dev-server ./src/index.js
+webpack: Failed to compile.
+</code></pre>
+<h2 id="babel-preset-react">babel-preset-react</h2>
+<p>Esto es debido a que <code>webpack</code> no es capaz de compilar nuestra síntaxis de React. Para ello deberemos configurar un preset de Babel
+ que sea capaz de compilar dicha síntaxis. <a href="https://babeljs.io/docs/plugins/preset-react/">babel-preset-react</a> será el encargado de dicha tarea. 
+ Primero la instalamos, y aprovechando, instalaremos el preset de <code>babel</code> para ES2015 que nos dará acceso a todos los plugins de ES6:</p>
+<pre><code>yarn add babel-preset-react babel-preset-es2015 --dev
+</code></pre>
+<p>Y configuramos <code>babel</code> para que use este preset. Crearemos un archivo <code>.babelrc</code> en el raiz de nuestro directorio y añadiremos:</p>
+<pre><code> {
+   "presets": [
+     ["es2015", {"modules": false}],
+     "react"
+   ]
+ }
+</code></pre>
+<p>Ahora nuestra aplicación lucirá de la siguiente manera:</p>
+<p><img alt="" src="../_images/onsenui.png" /></p>
+<p>¿Qué pasa con los estilos?, ¿porqué no aparecen los botones?. Para ello deberemos cargar los CSS de OnsenUI que se encarga 
+ de dar forma a los componentes.</p>
+<p>Para ello importaremos estos estilos desde nuestro <code>indes.js</code>:</p>
+<pre><code> require('onsenui/css/onsen-css-components.css');
+ require('onsenui/css/onsenui.css');
+</code></pre>
+<p>Y de nuevo obtendremos un error:</p>
+<pre><code> ERROR in ./~/onsenui/css/onsenui.css
+ Module parse failed: /home/michogarcia/geomati.co/TMB/dev/cordova-hmr-react-tutorial/node_modules/onsenui/css/onsenui.css Unexpected character '@' (19:0)
+ You may need an appropriate loader to handle this file type.
+ |  */
+ | 
+ | @import url("ionicons/css/ionicons.min.css");
+ | @import url("material-design-iconic-font/css/material-design-iconic-font.min.css");
+ | @import url("font_awesome/css/font-awesome.min.css");
+  @ ./src/index.js 10:0-34
+  @ multi (webpack)-dev-server/client?http://0.0.0.0:3000 webpack/hot/dev-server ./src/index.js
+</code></pre>
+<p>Esto es similar a lo sucedido con React, y es que tendremos que decirle a <code>webpack</code> el tipo de módulos que estamos intentando
+ cargar. Para ello instalaremos los <code>loaders</code> necesarios:</p>
+<pre><code>yarn add css-loader style-loader file-loader --dev
+</code></pre>
+<p>y modificamos la configuración de nuestro <code>webpack.config.js</code> para que use estos loaders:</p>
+<pre><code>    module: {
+        rules: [
+            {
+                test: /\.(js|jsx)$/,
+                exclude: [/node_modules/],
+                use: ['babel-loader'],
+            },
+            {
+                test: /\.css$/,
+                use: [ 'style-loader', 'css-loader' ]
+            },
+            {
+                test: /\.(ttf|otf|eot|svg|woff(2)?)(\?[a-z0-9]+)?$/,
+                loader: 'file-loader?name=assets/[name].[ext]'
+            }
+        ],
+    },
+</code></pre>
+<p><img alt="" src="../_images/onsenui_styles.png" /></p>
+<h2 id="react-hot-loader">react-hot-loader</h2>
+<p>Para probar <code>react-hot-loader</code> haremos unas pequeñas modificaciones en nuestra <code>App.js</code>. Añadiremos un estado a nuestro 
+componente para poder probar la funcionalidad que aporta <code>react-hot-loader</code>, ya que lo que consigue es mantener el estado 
+de nuestro componente a pesar de actualizar el módulo.</p>
+<p>Como se puede observar en el código, hemos añadido un estado <code>sum</code> en el constructor del componente:</p>
+<pre><code>constructor(props) {
+    super(props)
+    this.state = {
+        sum: 0
+    }
+}
+</code></pre>
+<p>Añadiremos el evento que se encargue de modificar el estado, en este caso un evento disparado desde el botón:</p>
+<pre><code>handleClick() {
+    this.setState({
+        sum: this.state.sum += 2
+    })
+}
+</code></pre>
+<p>y lo enlazamos al botón:</p>
+<pre><code>render() {
+    return (
+        &lt;Page&gt;
+            &lt;Button onClick={this.handleClick.bind(this)}&gt;Suma = {this.state.sum}&lt;/Button&gt;
+        &lt;/Page&gt;
+    );
+};
+</code></pre>
+<p>Ahora cada vez que pulsemos el botón modificará el texto del mismo:</p>
+<p><img alt="" src="../_images/state.png" /></p>
+<p>Pero si tras haber pulsado y modificado el estado, cambiamos el texto del botón, HMR recargará nuestro botón y reiniciará 
+el estado del componente cambiando el valor a su estado inicial.</p>
+<p><img alt="" src="../_images/state_after_hmr.png" /></p>
+<p>Ahora es cuando entra en juego <code>react-hot-loader</code>, ya que este permitirá mantener el estado de nuestro componente tras la 
+recarga del código mediante HMR.</p>
+<p>Empezaremos instalando <code>react-hot-loader</code>:</p>
+<pre><code>yarn add react-hot-loader@next --dev
+</code></pre>
+<p>modificaremos el <code>webpack.config.js</code> para activarlo:</p>
+<pre><code>entry: [
+    'react-hot-loader/patch',
+    // activate HMR for React
+
+    './src/index.js',
+    // the entry point of our app
+]
+</code></pre>
+<p>Por último debemos modificar nuestro punto de entrada para que utilice el <code>AppContainer</code> de <code>react-hot-loader</code> que será
+el encargado de mantener el estado de nuestra aplicación. El componente raíz de la aplicación deberá estar contenido dentro
+del componente <code>AppContainer</code>:</p>
+<pre><code>const render = Component =&gt; {
+    ReactDOM.render(
+        &lt;AppContainer&gt;
+            &lt;Component /&gt;
+        &lt;/AppContainer&gt;,
+        rootElement
+    )
+}
+
+render(App)
+
+if (module.hot) {
+    module.hot.accept('./App', () =&gt; { render(App) })
+}
+</code></pre>
+<p>De esta manera si realizamos el proceso anterior, modificando el estado de nuestro componente y a su vez modificamos el código
+para que actue HMR, veremos como el estado del componente se mantiene tras la actualización.</p>
+<h2 id="referencias">Referencias</h2>
+<p><a href="https://thesabbir.com/hot-reloading-react-stateless-components/">https://thesabbir.com/hot-reloading-react-stateless-components/</a></p>
+                
+                  
+                
+              
+              
+                
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+          <a href="../hrm/" title="Configurando Hot Module Replacement" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Configurando Hot Module Replacement
+              </span>
+            </div>
+          </a>
+        
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        powered by
+        <a href="http://www.mkdocs.org" title="MkDocs">MkDocs</a>
+        and
+        <a href="http://squidfunk.github.io/mkdocs-material/" title="Material for MkDocs">
+          Material for MkDocs</a>
+      </div>
+      
+        
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../assets/javascripts/application-06a3e72efd.js"></script>
+      <script>app.initialize({url:{base:".."}})</script>
+      
+    
+    
+      
+    
+  </body>
+</html>
