@@ -1,0 +1,371 @@
+
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="shortcut icon" href="../assets/images/favicon.png">
+      
+      <meta name="generator" content="mkdocs-0.16.3, mkdocs-material-1.6.4">
+    
+    
+      
+        <title>Instalación y configuración de webpack-dev-server - HMR Tutorial</title>
+      
+    
+    
+      <script src="../assets/javascripts/modernizr-1df76c4e58.js"></script>
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/application-e2807e330f.css">
+      
+    
+    
+      
+        
+        
+        
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+      
+      <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    
+    
+    
+  </head>
+  
+  
+  
+  
+    <body>
+  
+    <svg class="md-svg">
+      <defs>
+        
+        
+      </defs>
+    </svg>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="drawer">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="search">
+    <label class="md-overlay" data-md-component="overlay" for="drawer"></label>
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          <a href=".." title="HMR Tutorial" class="md-icon md-icon--home md-header-nav__button">
+          </a>
+        
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <span class="md-flex__ellipsis md-header-nav__title">
+          
+            
+              
+            
+            Instalación y configuración de webpack-dev-server
+          
+        </span>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          <label class="md-icon md-icon--search md-header-nav__button" for="search"></label>
+          
+<div class="md-search" data-md-component="search">
+  <label class="md-search__overlay" for="search"></label>
+  <div class="md-search__inner">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" required placeholder="Search" accesskey="s" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query">
+      <label class="md-icon md-search__icon" for="search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset">close</button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta" data-md-lang-result-none="No matching documents" data-md-lang-result-one="1 matching document" data-md-lang-result-other="# matching documents">
+            Type to start searching
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+        
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <div class="md-header-nav__source">
+          
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      
+      
+      <main class="md-main">
+        <div class="md-main__inner md-grid" data-md-component="container">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="drawer">
+    
+      <i class="md-icon md-icon--home md-nav__button"></i>
+    
+    HMR Tutorial
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href=".." title="Inicio" class="md-nav__link">
+      Inicio
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../bundle/" title="Creación del bundle" class="md-nav__link">
+      Creación del bundle
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="toc">
+    
+      
+    
+    
+    <a href="./" title="Instalación y configuración de webpack-dev-server" class="md-nav__link md-nav__link--active">
+      Instalación y configuración de webpack-dev-server
+    </a>
+    
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                <h1 id="webpack-dev-server">Webpack-dev-server</h1>
+<pre><code>yarn add webpack-dev-server
+</code></pre>
+<p>y creamos una orden en los scripts del package.json para ejecutarlo:</p>
+<pre><code>“dev”: “webpack-dev-server”
+</code></pre>
+<p>Este es un servidor de desarrollo que publicará los recursos de webpack para que sean accesibles desde el navegador. Lo que hace es crear un servidor de desarrollo que publica los recursos. Para ello configuramos en el webpack.config.js los siguientes cambios:</p>
+<pre><code>devServer: {
+    contentBase: path.join(__dirname, "platforms/android/assets/www"),
+    compress: true,
+    port: 3000,
+    publicPath: '/js/'  
+},
+</code></pre>
+<ul>
+<li><code>contentBase</code>: carpeta desde la que se publicará la raíz de nuestro contenido</li>
+<li><code>compress</code>: comprime como gzip todo el contenido servido</li>
+<li><code>port</code>: el puerto donde se publicará http://localhost:<port></li>
+<li><code>publicPath</code>: el path donde será publicados los recursos bundled, en nuestro caso que el valor es /js/ la ruta final de los archivos bundled será http://localhost:<port>/js/</li>
+</ul>
+<p>Si ejecutamos npm dev la salida nos dará:</p>
+<pre><code>   &gt; webpack-dev-server
+
+   Project is running at http://localhost:3000/
+   webpack output is served from /js/
+   Content not from webpack is served from /home/michogarcia/geomati.co/TMB/dev/hmr-tutorial/dist
+   Hash: b6f42794026ca8bf8d0a
+   Version: webpack 2.6.1
+   Time: 928ms
+     Asset    Size  Chunks                    Chunk Names
+   main.js  841 kB       0  [emitted]  [big]  main
+   chunk    {0} main.js (main) 302 kB [entry] [rendered]
+      [35] (webpack)-dev-server/client?http://localhost:3000 5.68 kB {0} [built]
+      [36] ./src/index.js 84 bytes {0} [built]
+      [37] ./~/ansi-html/index.js 4.26 kB {0} [built]
+      [38] ./~/ansi-regex/index.js 135 bytes {0} [built]
+      [40] ./~/events/events.js 8.33 kB {0} [built]
+      [41] ./~/html-entities/index.js 231 bytes {0} [built]
+      [48] ./~/querystring-es3/index.js 127 bytes {0} [built]
+      [77] ./~/strip-ansi/index.js 161 bytes {0} [built]
+      [78] ./~/url/url.js 23.3 kB {0} [built]
+      [79] ./~/url/util.js 314 bytes {0} [built]
+      [80] (webpack)-dev-server/client/overlay.js 3.73 kB {0} [built]
+      [81] (webpack)-dev-server/client/socket.js 897 bytes {0} [built]
+      [83] (webpack)/hot/emitter.js 77 bytes {0} [built]
+      [84] ./src/App.js 149 bytes {0} [built]
+      [85] multi (webpack)-dev-server/client?http://localhost:3000 ./src/index.js 40 bytes {0} [built]
+        + 71 hidden modules
+   webpack: Compiled successfully.
+</code></pre>
+<p><code>webpack-dev-server</code> creará el <code>bundle</code> tal y como hemos definido y lo publicará en las rutas que hayamos configurado. Si nos 
+fijamos en la salida, el propio servidor nos está indicando donde podemos encontrar nuestros <code>bundles</code> publicados:</p>
+<pre><code>Project is running at http://localhost:3000/
+</code></pre>
+<p>Podremos ver un resumen en:</p>
+<p><a href="http://localhost:3000/webpack-dev-server">http://localhost:3000/webpack-dev-server</a></p>
+<p>y veremos nuestro <code>bundle</code> publicado en:</p>
+<p><a href="http://localhost:3000/main.js">http://localhost:3000/main.js</a></p>
+<p>Para comprobar como <code>webpack-dev-server</code> nos ayuda en el desarrollo generando el <code>bundle</code> de manera dinámica cada vez que se detecta un cambio
+crearemos un archivo <code>index.html</code> en la carpeta <code>dist</code> que será la carpeta que publicaremos.</p>
+<p>Haremos algunos cambios en la creación del <code>bundle</code> para adaptarlo a la nueva estructura de carpetas. Para ello, modificaremos la salida:</p>
+<pre><code>output: {
+   path: path.resolve(__dirname, 'dist/js'),
+   filename: '[name].js',
+},
+</code></pre>
+<p>indicándole la nueva ruta <code>dist/js</code>. Recordad que el raiz de nuestro <code>webpack-dev-server</code> será la propia carpeta <code>dist</code> y que el
+<code>publicPath</code> apunta a la que será la carpeta <code>dist/js</code> donde se guardará el <code>bundle</code> que se genera.</p>
+<p>Si ejecutamos de nuevo:</p>
+<pre><code>npm run dev
+</code></pre>
+<p>podremos observar que ahora la ruta de nuestro <code>bundle</code> (main.js) está en:</p>
+<p><a href="http://localhost:3000/js/main.js">http://localhost:3000/js/main.js</a></p>
+<p>Si vamos a la carpeta <code>dist</code> comprobaremos que no se ha creado ningún archivo en la misma, eso es porque en todo momento
+<code>webpack-dev-server</code> está publicando el <code>bundle</code> desde memoria.</p>
+<p>Ahora crearemos una <code>&lt;div id=rootElement&gt;</code> en el <code>index.html</code> para poder visualizar como trabaja <code>webpack-dev-server</code>.</p>
+<pre><code>&lt;body&gt;
+    &lt;div id="rootElement"&gt;&lt;/div&gt;
+&lt;/body&gt;
+</code></pre>
+<p>Incluiremos en nuestra <code>App.js</code> la funcionalidad que modifique el contenido de esa <code>&lt;div&gt;</code></p>
+<pre><code>constructor() {
+    document.getElementById('rootElement').innerHTML = '&lt;span&gt;Mira, ¡¡funciona!!&lt;/span&gt;';
+}
+</code></pre>
+<p>y haremos que el <code>index.html</code> cargue nuestro <code>bundle</code>.</p>
+<pre><code>&lt;script type="text/javascript" src="./js/main.js"&gt;&lt;/script&gt;
+</code></pre>
+<p>Si modificamos nuestra <code>App.js</code> por ejemplo cambiando el texto, veremos como <code>webpack-dev-server</code> "compila" de nuevo</p>
+<pre><code> webpack: Compiling...
+ Hash: e5d45663418c4a61284b
+ Version: webpack 2.6.1
+ Time: 146ms
+   Asset    Size  Chunks                    Chunk Names
+ main.js  841 kB       0  [emitted]  [big]  main
+ chunk    {0} main.js (main) 302 kB [entry] [rendered]
+    [84] ./src/App.js 201 bytes {0} [built]
+      + 85 hidden modules
+ webpack: Compiled successfully.
+</code></pre>
+<p>y publica el nuevo <code>bundle</code> aplicando los cambios automáticamente sin refrescar.</p>
+                
+                  
+                
+              
+              
+                
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+          <a href="../bundle/" title="Creación del bundle" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Creación del bundle
+              </span>
+            </div>
+          </a>
+        
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        powered by
+        <a href="http://www.mkdocs.org" title="MkDocs">MkDocs</a>
+        and
+        <a href="http://squidfunk.github.io/mkdocs-material/" title="Material for MkDocs">
+          Material for MkDocs</a>
+      </div>
+      
+        
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../assets/javascripts/application-06a3e72efd.js"></script>
+      <script>app.initialize({url:{base:".."}})</script>
+      
+    
+    
+      
+    
+  </body>
+</html>
