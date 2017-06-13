@@ -2,6 +2,9 @@ const path = require('path');
 const webpack = require('webpack');
 
 const entries = [
+    'react-hot-loader/patch',
+    // activate HMR for React
+
     './src/index.js',
     // the entry point of our app
 ]
@@ -23,6 +26,14 @@ module.exports = {
                 test: /\.(js|jsx)$/,
                 exclude: [/node_modules/],
                 use: ['babel-loader'],
+            },
+            {
+                test: /\.css$/,
+                use: [ 'style-loader', 'css-loader' ]
+            },
+            {
+                test: /\.(ttf|otf|eot|svg|woff(2)?)(\?[a-z0-9]+)?$/,
+                loader: 'file-loader?name=assets/[name].[ext]'
             }
         ],
     },
