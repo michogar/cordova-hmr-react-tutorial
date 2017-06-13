@@ -15,7 +15,7 @@
     
     
       
-        <title>Creación del bundle - HMR Tutorial</title>
+        <title>Configurando Hot Module Replacement - HMR Tutorial</title>
       
     
     
@@ -72,7 +72,7 @@
             
               
             
-            Creación del bundle
+            Configurando Hot Module Replacement
           
         </span>
       </div>
@@ -147,20 +147,11 @@
       
       
 
-  
 
-
-  <li class="md-nav__item md-nav__item--active">
-    
-    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="toc">
-    
-      
-    
-    
-    <a href="./" title="Creación del bundle" class="md-nav__link md-nav__link--active">
+  <li class="md-nav__item">
+    <a href="../bundle/" title="Creación del bundle" class="md-nav__link">
       Creación del bundle
     </a>
-    
   </li>
 
     
@@ -192,11 +183,47 @@
       
       
 
+  
 
-  <li class="md-nav__item">
-    <a href="../hrm/" title="Configurando Hot Module Replacement" class="md-nav__link">
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="toc">
+        Configurando Hot Module Replacement
+      </label>
+    
+    <a href="./" title="Configurando Hot Module Replacement" class="md-nav__link md-nav__link--active">
       Configurando Hot Module Replacement
     </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#referencias" title="Referencias" class="md-nav__link">
+    Referencias
+  </a>
+  
+</li>
+      
+      
+      
+    </ul>
+  
+</nav>
+    
   </li>
 
     
@@ -217,6 +244,20 @@
     
   
   
+    <label class="md-nav__title" for="toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#referencias" title="Referencias" class="md-nav__link">
+    Referencias
+  </a>
+  
+</li>
+      
+      
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -228,55 +269,53 @@
               
                 
                 
-                <h1 id="creacion-del-bundle">Creación del Bundle</h1>
-<p>Webpack genera un archivo llamado bundle, donde almacenará las dependencias de nuestro proyecto a partir de los imports de este mismo. </p>
-<p>En este tutorial usaremos <code>yarn</code> como gestor de paquetes, por lo que empezamos inicializando el proyecto creando el <code>package.json</code>:</p>
-<pre><code>yarn init
+                <h1 id="configurando-hot-module-replacement">Configurando Hot Module Replacement</h1>
+<p><a href="https://webpack.js.org/concepts/hot-module-replacement">Hot Module Replacement</a>, HMR, permite intercambiar, añadir o eliminar módulos sin necesidad de hacer una recarga completa de
+la aplicación.</p>
+<p>Comenzaremos configurando HMR modificando el <code>webpack.config.js</code> para incluir estos cambios.</p>
+<p>Incluiremos el <code>plugin</code> de HMR:</p>
+<pre><code>plugins: [
+    new webpack.HotModuleReplacementPlugin() // Enable HMR
+  ],
 </code></pre>
-
-<p>Seguiremos con la instalación de <code>webpack</code>:</p>
-<pre><code>$ yarn add webpack
+<p>los plugins permiten modificar el comportamiento de <code>webpack</code> añadiendole nuevas funcionalidades.</p>
+<p>Ahora le diremos al <code>webpack-dev-server</code> que utilice HMR:</p>
+<pre><code>devServer: {
+    contentBase: path.join(__dirname, "dist"),
+    hot: true, // Tell the dev-server we're using HMR
+    compress: true,
+    port: 3000,
+    publicPath: '/js/'
+},
 </code></pre>
-
-<p>Ahora configuraremos <code>webpack</code> para la creación de nuestro bundle. Crearemos el archivo <code>webpack.config.js</code> y añadiremos la siguiente configuración:</p>
-<pre><code>const path = require('path');
-
-module.exports = {
-    context: path.resolve(__dirname),
-    devtool: "eval-source-map",
-    entry: {
-        main: './src/index.js'
-     },
-    output: {
-        path: path.resolve(__dirname, 'dist'),
-        filename: '[name].js',
-    }
-};
+<p>Añadiremos la propiedad <code>publicPath</code> también al <code>output</code>:</p>
+<pre><code>output: {
+    path: path.resolve(__dirname, 'dist/js'),
+    filename: '[name].js',
+    publicPath: "/js/"
+},
 </code></pre>
-<ul>
-<li><code>context</code>: será el directorio base a partir del cual se se resuelven los puntos de entrada y los <code>loaders</code></li>
-<li><code>devtool</code>: Controla como quieres que se generen los <code>source maps</code> <a href="https://webpack.js.org/configuration/devtool/">Documentación</a>. Es importante controlar este valor ya que será el que nos permita debugar la salida generada por <code>webpack</code></li>
-<li><code>entry</code>: entrada desde la que se generará el <code>bundle</code>. Es el archivo de inicio de nuestra aplicación, a partir del cual <code>webpack</code>irá construyendo el <code>bundle</code> "tirando" de las dependencias de los módulos que importamos.</li>
-<li><code>output</code>: controla donde y como queremos que se generen las salidas o salida de nuestro <code>bundle</code> y resto de archivos necesarios en nuestra aplicación.</li>
-</ul>
-<p>Con la configuración básica anterior, nos faltaría tener los archivos <code>index.js</code> y sus dependencias. En el <a href="">repositorio</a> preparado para este tutorial podrás encontrar estos arhivos ya preparados.</p>
-<p>Crearemos una tarea de <code>npm</code> que nos ejecute <code>webpack</code> y nos genere nuestro <code>bundle</code>:</p>
-<pre><code>"build": "webpack"
+<p>Como se <a href="https://webpack.js.org/concepts/hot-module-replacement/#in-a-module">explica en la documentación</a> hemos de indicar 
+en nuestros módulos que hagan uso de HMR. Esto lo podemos hacer a nivel de módulo o directamente en el módulo
+raiz que hará que HMR lo use todo el arbol de módulos. Para ello añadiremos a nuestro archivo <code>index.js</code> el código necesario para 
+hacer uso de HMR:</p>
+<pre><code>if (module.hot) {
+    module.hot.accept();
+}
 </code></pre>
-<p>Si ejecutamos este script:</p>
-<pre><code> npm run build
+<p>Si ahora realizamos un cambio en <code>App.js</code> veremos que se aplican estos sin recargar toda la página. Podremos ver la salida 
+en la consola de desarrollo:</p>
+<p><img alt="" src="../_images/hmr.png" /></p>
+<p>Como podemos observar, los nombres de los archivos que han cambiado no aparecen. Para evitar esto, añadiremos un plugin a la 
+configuración actual de <code>webpack</code></p>
+<pre><code>plugins: [
+    new webpack.HotModuleReplacementPlugin(), // Enable HMR
+    new webpack.NamedModulesPlugin(),
+],
 </code></pre>
-<p>construiremos nuestro <code>bundle</code> que será guardado en la ruta que hemos indicado en el <code>output</code>:</p>
-<pre><code>&gt; webpack
-
-Hash: 019c0dd0b804295531e4
-Version: webpack 2.6.1
-Time: 79ms
-  Asset     Size  Chunks             Chunk Names
-main.js  4.49 kB       0  [emitted]  main
-   [0] ./src/App.js 149 bytes {0} [built]
-   [1] ./src/index.js 84 bytes {0} [built]
-</code></pre>
+<p><img alt="" src="../_images/hmr_named.png" /></p>
+<h2 id="referencias">Referencias</h2>
+<p><a href="https://medium.com/@rajaraodv/webpack-hot-module-replacement-hmr-e756a726a07">Webpack &amp; The Hot Module Replacement</a></p>
                 
                   
                 
@@ -295,7 +334,7 @@ main.js  4.49 kB       0  [emitted]  main
     <div class="md-footer-nav">
       <nav class="md-footer-nav__inner md-grid">
         
-          <a href=".." title="Inicio" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+          <a href="../babel/" title="Compilando desde ES6" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
             <div class="md-flex__cell md-flex__cell--shrink">
               <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
             </div>
@@ -304,25 +343,11 @@ main.js  4.49 kB       0  [emitted]  main
                 <span class="md-footer-nav__direction">
                   Previous
                 </span>
-                Inicio
+                Compilando desde ES6
               </span>
             </div>
           </a>
         
-        
-          <a href="../webpackdevserver/" title="Instalación y configuración de webpack-dev-server" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
-            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
-              <span class="md-flex__ellipsis">
-                <span class="md-footer-nav__direction">
-                  Next
-                </span>
-                Instalación y configuración de webpack-dev-server
-              </span>
-            </div>
-            <div class="md-flex__cell md-flex__cell--shrink">
-              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
-            </div>
-          </a>
         
       </nav>
     </div>
