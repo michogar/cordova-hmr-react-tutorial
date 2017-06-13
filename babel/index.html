@@ -9,20 +9,20 @@
       
       
       
-        <link rel="shortcut icon" href="/assets/images/favicon.png">
+        <link rel="shortcut icon" href="../assets/images/favicon.png">
       
       <meta name="generator" content="mkdocs-0.16.3, mkdocs-material-1.6.4">
     
     
       
-        <title>HMR Tutorial</title>
+        <title>Compilando desde ES6 - HMR Tutorial</title>
       
     
     
-      <script src="/assets/javascripts/modernizr-1df76c4e58.js"></script>
+      <script src="../assets/javascripts/modernizr-1df76c4e58.js"></script>
     
     
-      <link rel="stylesheet" href="/assets/stylesheets/application-e2807e330f.css">
+      <link rel="stylesheet" href="../assets/stylesheets/application-e2807e330f.css">
       
     
     
@@ -59,7 +59,7 @@
     <div class="md-flex">
       <div class="md-flex__cell md-flex__cell--shrink">
         
-          <a href="/" title="HMR Tutorial" class="md-icon md-icon--home md-header-nav__button">
+          <a href=".." title="HMR Tutorial" class="md-icon md-icon--home md-header-nav__button">
           </a>
         
       </div>
@@ -70,7 +70,9 @@
         <span class="md-flex__ellipsis md-header-nav__title">
           
             
-            HMR Tutorial
+              
+            
+            Compilando desde ES6
           
         </span>
       </div>
@@ -135,7 +137,7 @@
 
 
   <li class="md-nav__item">
-    <a href="/" title="Inicio" class="md-nav__link">
+    <a href=".." title="Inicio" class="md-nav__link">
       Inicio
     </a>
   </li>
@@ -147,7 +149,7 @@
 
 
   <li class="md-nav__item">
-    <a href="/bundle/" title="Creación del bundle" class="md-nav__link">
+    <a href="../bundle/" title="Creación del bundle" class="md-nav__link">
       Creación del bundle
     </a>
   </li>
@@ -159,7 +161,7 @@
 
 
   <li class="md-nav__item">
-    <a href="/webpackdevserver/" title="Instalación y configuración de webpack-dev-server" class="md-nav__link">
+    <a href="../webpackdevserver/" title="Instalación y configuración de webpack-dev-server" class="md-nav__link">
       Instalación y configuración de webpack-dev-server
     </a>
   </li>
@@ -169,11 +171,20 @@
       
       
 
+  
 
-  <li class="md-nav__item">
-    <a href="/babel/" title="Compilando desde ES6" class="md-nav__link">
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="toc">
+    
+      
+    
+    
+    <a href="./" title="Compilando desde ES6" class="md-nav__link md-nav__link--active">
       Compilando desde ES6
     </a>
+    
   </li>
 
     
@@ -184,12 +195,67 @@
               </div>
             
             
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
           
           <div class="md-content">
             <article class="md-content__inner md-typeset">
               
-  <h1>404 - Not found</h1>
-
+                
+                
+                <h1 id="compilando-desde-es6">Compilando desde ES6</h1>
+<p>Como ya os habréis fijado, hemos escrito nuestro código usando ES6. Aunque cada vez más los navegadores incorporan prácticamente 
+ todas las funcionalidades del nuevo estandar, pero en algunso casos querremos compilar nuestro código desde ES6 a ES5. </p>
+<p>Para ello utilizaremos <a href="https://babeljs.io/">Babel</a> un compilador de JavaScript que nos permite realizar esta compilación.</p>
+<p>Tendremos instalar algunos paquetes y realizar algunos cambios en la configuración del <code>webpack</code>.</p>
+<p>Para realizar la compilación usaremos los <code>loaders</code> de <code>webpack</code>. Los loaders se encargan de realizar ciertas operaciones 
+ durante la creación del <code>bundle</code>.</p>
+<p>Primero instalamos los paquetes necesarios para la compilación:</p>
+<pre><code>yarn add babel-core babel-loader --dev
+</code></pre>
+<p>y añadimos la configuración necesaria:</p>
+<pre><code> module: {
+     rules: [
+         {
+             test: /\.(js|jsx)$/,
+             exclude: [/node_modules/],
+             use: ['babel-loader'],
+         }
+     ],
+ },
+</code></pre>
+<ul>
+<li><code>module</code>: se encarga de definir los típos de módulos que tenemos dentro del proyecto y nos permite configurar diferentes
+ tratamientos.</li>
+<li><code>rules</code>: reglas que aplicarán configuraciones sobre aquellos módulos que las cumplan. Se trata de un <code>Array</code> en el que se van incluyendo
+ las diferentes reglas</li>
+</ul>
+<p>Una <code>rule</code> viene definida por un objeto que a su vez tiene unas propiedades, en nuestro caso:</p>
+<ul>
+<li><code>test</code>: la regla que se aplicará a los recursos, en nuestro caso es una expresión regular que aplica la configuración 
+ definida a los archivos con extensión <code>.js</code> o <code>.jsx</code>. <a href="https://webpack.js.org/configuration/module/#condition">Documentación Oficial</a></li>
+<li><code>exclude</code>: <strong>NO</strong> se aplica a los recursos que cumplan la condición, en nuestro caso que se encuentren en el path <code>node_modules</code>
+ evitando así la compilación de los archivos que se encuentran en esa carpeta</li>
+<li><code>use</code>: listado de <code>loaders</code> que serán aplicados a los recursos</li>
+</ul>
+<p>Ahora nuestro código estará preparado para los navegadores que no implementen todavía ES6.</p>
+                
+                  
+                
+              
               
                 
               
@@ -200,6 +266,27 @@
       
         
 <footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+          <a href="../webpackdevserver/" title="Instalación y configuración de webpack-dev-server" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Instalación y configuración de webpack-dev-server
+              </span>
+            </div>
+          </a>
+        
+        
+      </nav>
+    </div>
   
   <div class="md-footer-meta md-typeset">
     <div class="md-footer-meta__inner md-grid">
@@ -220,8 +307,8 @@
       
     </div>
     
-      <script src="/assets/javascripts/application-06a3e72efd.js"></script>
-      <script>app.initialize({url:{base:""}})</script>
+      <script src="../assets/javascripts/application-06a3e72efd.js"></script>
+      <script>app.initialize({url:{base:".."}})</script>
       
     
     
