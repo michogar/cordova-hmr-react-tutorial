@@ -7,3 +7,4 @@ pages:
 - Compilando desde ES6: babel.md
 - Configurando Hot Module Replacement: hrm.md
 - OnsenUI, React, babel-preset-react y react-hot-loader: react.md
+- Code Splitting: vendor.md

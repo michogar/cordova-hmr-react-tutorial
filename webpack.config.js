@@ -1,5 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 const entries = [
     'react-hot-loader/patch',
@@ -9,11 +10,28 @@ const entries = [
     // the entry point of our app
 ]
 
+let plugins = [
+    new webpack.HotModuleReplacementPlugin(), // Enable HMR
+    new webpack.NamedModulesPlugin(),
+    new webpack.optimize.CommonsChunkPlugin({
+        name: 'vendor' // Specify the common bundle's name.
+    }),
+    new ExtractTextPlugin('../css/styles.css')
+]
+
+if (process.env.REPORT) {
+    const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+    plugins.push(new BundleAnalyzerPlugin({
+        analyzerMode: 'static'
+    }))
+}
+
 module.exports = {
     context: path.resolve(__dirname),
     devtool: "eval-source-map",
     entry: {
-        main: entries
+        main: entries,
+        vendor: ['onsenui', 'react', 'react-dom', 'react-onsenui']
     },
     output: {
         path: path.resolve(__dirname, 'dist/js'),
@@ -29,7 +47,9 @@ module.exports = {
             },
             {
                 test: /\.css$/,
-                use: [ 'style-loader', 'css-loader' ]
+                use: ExtractTextPlugin.extract({
+                    use: ['css-loader']
+                })
             },
             {
                 test: /\.(ttf|otf|eot|svg|woff(2)?)(\?[a-z0-9]+)?$/,
@@ -44,8 +64,5 @@ module.exports = {
         port: 3000,
         publicPath: "/js/"
     },
-    plugins: [
-        new webpack.HotModuleReplacementPlugin(), // Enable HMR
-        new webpack.NamedModulesPlugin(),
-    ],
+    plugins: plugins
 };
