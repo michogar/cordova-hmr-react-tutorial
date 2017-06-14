@@ -15,7 +15,7 @@
     
     
       
-        <title>Configurando Hot Module Replacement - HMR Tutorial</title>
+        <title>Code Splitting - HMR Tutorial</title>
       
     
     
@@ -72,7 +72,7 @@
             
               
             
-            Configurando Hot Module Replacement
+            Code Splitting
           
         </span>
       </div>
@@ -183,47 +183,11 @@
       
       
 
-  
 
-
-  <li class="md-nav__item md-nav__item--active">
-    
-    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="toc">
-    
-      
-    
-    
-      <label class="md-nav__link md-nav__link--active" for="toc">
-        Configurando Hot Module Replacement
-      </label>
-    
-    <a href="./" title="Configurando Hot Module Replacement" class="md-nav__link md-nav__link--active">
+  <li class="md-nav__item">
+    <a href="../hrm/" title="Configurando Hot Module Replacement" class="md-nav__link">
       Configurando Hot Module Replacement
     </a>
-    
-      
-<nav class="md-nav md-nav--secondary">
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="toc">Table of contents</label>
-    <ul class="md-nav__list" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#referencias" title="Referencias" class="md-nav__link">
-    Referencias
-  </a>
-  
-</li>
-      
-      
-      
-    </ul>
-  
-</nav>
-    
   </li>
 
     
@@ -243,11 +207,20 @@
       
       
 
+  
 
-  <li class="md-nav__item">
-    <a href="../vendor/" title="Code Splitting" class="md-nav__link">
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="toc">
+    
+      
+    
+    
+    <a href="./" title="Code Splitting" class="md-nav__link md-nav__link--active">
       Code Splitting
     </a>
+    
   </li>
 
     
@@ -268,20 +241,6 @@
     
   
   
-    <label class="md-nav__title" for="toc">Table of contents</label>
-    <ul class="md-nav__list" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#referencias" title="Referencias" class="md-nav__link">
-    Referencias
-  </a>
-  
-</li>
-      
-      
-      
-    </ul>
-  
 </nav>
                   </div>
                 </div>
@@ -293,53 +252,115 @@
               
                 
                 
-                <h1 id="configurando-hot-module-replacement">Configurando Hot Module Replacement</h1>
-<p><a href="https://webpack.js.org/concepts/hot-module-replacement">Hot Module Replacement</a>, HMR, permite intercambiar, añadir o eliminar módulos sin necesidad de hacer una recarga completa de
-la aplicación.</p>
-<p>Comenzaremos configurando HMR modificando el <code>webpack.config.js</code> para incluir estos cambios.</p>
-<p>Incluiremos el <code>plugin</code> de HMR:</p>
-<pre><code>plugins: [
-    new webpack.HotModuleReplacementPlugin() // Enable HMR
-  ],
+                <h1 id="code-splitting">Code Splitting</h1>
+<p>Uno de los factores a tener en cuenta con el uso de <code>webpack</code> es el tamaño del <code>bundle</code>. En nuestro caso, si creamos una 
+tarea de <code>build</code>:</p>
+<pre><code>"build": "webpack"
 </code></pre>
-<p>los plugins permiten modificar el comportamiento de <code>webpack</code> añadiendole nuevas funcionalidades.</p>
-<p>Ahora le diremos al <code>webpack-dev-server</code> que utilice HMR:</p>
-<pre><code>devServer: {
-    contentBase: path.join(__dirname, "dist"),
-    hot: true, // Tell the dev-server we're using HMR
-    compress: true,
-    port: 3000,
-    publicPath: '/js/'
-},
+<p>podremos ver en la salida:</p>
+<pre><code>&gt; webpack
+
+Hash: 65779b8f1ff313e41c2b
+Version: webpack 2.6.1
+Time: 4669ms
+                                   Asset     Size  Chunks                    Chunk Names
+                     assets/ionicons.svg   334 kB          [emitted]  [big]  
+          assets/fontawesome-webfont.eot  76.5 kB          [emitted]         
+          assets/fontawesome-webfont.ttf   153 kB          [emitted]         
+         assets/fontawesome-webfont.woff  90.4 kB          [emitted]         
+        assets/fontawesome-webfont.woff2  71.9 kB          [emitted]         
+                     assets/ionicons.eot   121 kB          [emitted]         
+          assets/fontawesome-webfont.svg   392 kB          [emitted]  [big]  
+                     assets/ionicons.ttf   189 kB          [emitted]         
+                    assets/ionicons.woff  67.9 kB          [emitted]         
+  assets/Material-Design-Iconic-Font.ttf  99.2 kB          [emitted]         
+ assets/Material-Design-Iconic-Font.woff  50.3 kB          [emitted]         
+assets/Material-Design-Iconic-Font.woff2  38.4 kB          [emitted]         
+                                 main.js  12.3 MB       0  [emitted]  [big]  main
 </code></pre>
-<p>Añadiremos la propiedad <code>publicPath</code> también al <code>output</code>:</p>
-<pre><code>output: {
-    path: path.resolve(__dirname, 'dist/js'),
-    filename: '[name].js',
-    publicPath: "/js/"
-},
+<p>De momento el archivo <code>main.js</code> tiene un tamaño de 12.3MB. Podemos imaginar que esto es debido a que genera el <code>bundle</code> con
+las importaciones de OnsenUI, React, React-DOM, además de las dependencias de estas librerías. Aun imaginando esto, podremos 
+usar un plugin, el <a href="">BundleAnalyzerPlugin</a> de <code>webpack</code> que nos permita una mejor visualización. Para ello, primero instalaremos
+el paquete del plugin:</p>
+<pre><code>yarn add webpack-bundle-analyzer --dev
 </code></pre>
-<p>Como se <a href="https://webpack.js.org/concepts/hot-module-replacement/#in-a-module">explica en la documentación</a> hemos de indicar 
-en nuestros módulos que hagan uso de HMR. Esto lo podemos hacer a nivel de módulo o directamente en el módulo
-raiz que hará que HMR lo use todo el arbol de módulos. Para ello añadiremos a nuestro archivo <code>index.js</code> el código necesario para 
-hacer uso de HMR:</p>
-<pre><code>if (module.hot) {
-    module.hot.accept();
-}
-</code></pre>
-<p>Si ahora realizamos un cambio en <code>App.js</code> veremos que se aplican estos sin recargar toda la página. Podremos ver la salida 
-en la consola de desarrollo:</p>
-<p><img alt="" src="../_images/hmr.png" /></p>
-<p>Como podemos observar, los nombres de los archivos que han cambiado no aparecen. Para evitar esto, añadiremos un plugin a la 
-configuración actual de <code>webpack</code></p>
-<pre><code>plugins: [
-    new webpack.HotModuleReplacementPlugin(), // Enable HMR
-    new webpack.NamedModulesPlugin(),
+<p>y después añadimos el plugin en el <code>webpack.config.js</code>:</p>
+<pre><code>const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+
+plugins: [
+   new webpack.HotModuleReplacementPlugin(), // Enable HMR
+   new webpack.NamedModulesPlugin(),
+   new BundleAnalyzerPlugin({
+       analyzerMode: 'static'
+   })
 ],
 </code></pre>
-<p><img alt="" src="../_images/hmr_named.png" /></p>
-<h2 id="referencias">Referencias</h2>
-<p><a href="https://medium.com/@rajaraodv/webpack-hot-module-replacement-hmr-e756a726a07">Webpack &amp; The Hot Module Replacement</a></p>
+<p>si volvemos a realizar un <code>build</code> de nuestro <code>bundle</code> podremos ver que se abre en nuestro navegador un diagrama de las
+dependencias de nuestra <code>App</code>.</p>
+<iframe width="600" height="400" frameborder="0" src="../_reports/report_1.html"></iframe>
+
+<p>Ahora podremos comprobar cual es el tamaño de nuestras dependencias. Pero para evitar que se lance el informe en cada <code>build</code>
+crearemos una tarea <code>report</code> en el <code>package.json</code> usando las variables de entorno de Node:</p>
+<pre><code>"report": "REPORT=true webpack"
+</code></pre>
+<p>y modificaremos el <code>webpack.config.js</code> de la siguiente manera:</p>
+<pre><code>let plugins = [
+        new webpack.HotModuleReplacementPlugin(), // Enable HMR
+        new webpack.NamedModulesPlugin()
+    ]
+
+if (process.env.REPORT) {
+    const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+    plugins.push(new BundleAnalyzerPlugin({
+        analyzerMode: 'static'
+    }))
+}
+
+...
+
+},
+plugins: plugins
+</code></pre>
+<p>Cada vez que hagamos cambios en nuestra <code>App</code>, <code>webpack</code> debe generar el <code>bundle</code> importando gran cantidad de código que no 
+cambia, como todo aquello referente al framework Onsen, React, etc, para ello una de las maneras que nos propone <code>webpack</code>
+es el uso de <a href="https://webpack.js.org/plugins/commons-chunk-plugin/">CommonsChunkPlugin</a> que nos generará varios <code>chunks</code> 
+con nuestro código.</p>
+<p>Configuraremos el plugin, primero definiendo las entradas que irán al <code>vendor</code>:</p>
+<pre><code>entry: {
+    main: entries,
+    vendor: ['onsenui', 'react', 'react-dom', 'react-onsenui']
+},
+</code></pre>
+<p>y después cargando el plugin:</p>
+<pre><code>let plugins = [
+    new webpack.HotModuleReplacementPlugin(), // Enable HMR
+    new webpack.NamedModulesPlugin(),
+    new webpack.optimize.CommonsChunkPlugin({
+        name: 'vendor' // Specify the common bundle's name.
+    })
+]
+</code></pre>
+<p>Si lanzamos ahora el <code>report</code> podremos observar que las dependencias <code>webpack</code> las ha empaquetado en el <code>vendor.js</code>. Aun así 
+vemos que la dependencia de los CSS sigue estando en el <code>main.js</code>.</p>
+<iframe width="600" height="400" frameborder="0" src="../_reports/report_2.html"></iframe>
+
+<p>Para extraer los CSS del <code>main.js</code> utilizaremos otro plugin de <code>webpack</code>, <a href="https://webpack.js.org/guides/code-splitting-css/#using-extracttextwebpackplugin">ExtractTextWebpackPlugin</a>
+Instalamos el plugin:</p>
+<pre><code>yarn add extract-text-webpack-plugin --dev
+</code></pre>
+<p>Modificamos el <code>webpack.config.js</code> para usar este nuevo plugin:</p>
+<pre><code>const ExtractTextPlugin = require('extract-text-webpack-plugin');
+
+let plugins = [
+    new webpack.HotModuleReplacementPlugin(), // Enable HMR
+    new webpack.NamedModulesPlugin(),
+    new webpack.optimize.CommonsChunkPlugin({
+        name: 'vendor' // Specify the common bundle's name.
+    }),
+    new ExtractTextPlugin('styles.css')
+]
+</code></pre>
+<iframe width="600" height="400" frameborder="0" src="../_reports/report_3.html"></iframe>
                 
                   
                 
@@ -358,7 +379,7 @@ configuración actual de <code>webpack</code></p>
     <div class="md-footer-nav">
       <nav class="md-footer-nav__inner md-grid">
         
-          <a href="../babel/" title="Compilando desde ES6" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+          <a href="../react/" title="OnsenUI, React, babel-preset-react y react-hot-loader" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
             <div class="md-flex__cell md-flex__cell--shrink">
               <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
             </div>
@@ -367,25 +388,11 @@ configuración actual de <code>webpack</code></p>
                 <span class="md-footer-nav__direction">
                   Previous
                 </span>
-                Compilando desde ES6
-              </span>
-            </div>
-          </a>
-        
-        
-          <a href="../react/" title="OnsenUI, React, babel-preset-react y react-hot-loader" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
-            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
-              <span class="md-flex__ellipsis">
-                <span class="md-footer-nav__direction">
-                  Next
-                </span>
                 OnsenUI, React, babel-preset-react y react-hot-loader
               </span>
             </div>
-            <div class="md-flex__cell md-flex__cell--shrink">
-              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
-            </div>
           </a>
+        
         
       </nav>
     </div>
