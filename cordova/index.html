@@ -15,7 +15,7 @@
     
     
       
-        <title>Compilando desde ES6 - HMR Tutorial</title>
+        <title>Añadiendo Cordova al stack - HMR Tutorial</title>
       
     
     
@@ -72,7 +72,7 @@
             
               
             
-            Compilando desde ES6
+            Añadiendo Cordova al stack
           
         </span>
       </div>
@@ -171,20 +171,11 @@
       
       
 
-  
 
-
-  <li class="md-nav__item md-nav__item--active">
-    
-    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="toc">
-    
-      
-    
-    
-    <a href="./" title="Compilando desde ES6" class="md-nav__link md-nav__link--active">
+  <li class="md-nav__item">
+    <a href="../babel/" title="Compilando desde ES6" class="md-nav__link">
       Compilando desde ES6
     </a>
-    
   </li>
 
     
@@ -228,11 +219,20 @@
       
       
 
+  
 
-  <li class="md-nav__item">
-    <a href="../cordova/" title="Añadiendo Cordova al stack" class="md-nav__link">
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="toc">
+    
+      
+    
+    
+    <a href="./" title="Añadiendo Cordova al stack" class="md-nav__link md-nav__link--active">
       Añadiendo Cordova al stack
     </a>
+    
   </li>
 
     
@@ -264,42 +264,72 @@
               
                 
                 
-                <h1 id="compilando-desde-es6">Compilando desde ES6</h1>
-<p>Como ya os habréis fijado, hemos escrito nuestro código usando ES6. Aunque cada vez más los navegadores incorporan prácticamente 
- todas las funcionalidades del nuevo estandar, pero en algunso casos querremos compilar nuestro código desde ES6 a ES5. </p>
-<p>Para ello utilizaremos <a href="https://babeljs.io/">Babel</a> un compilador de JavaScript que nos permite realizar esta compilación.</p>
-<p>Tendremos instalar algunos paquetes y realizar algunos cambios en la configuración del <code>webpack</code>.</p>
-<p>Para realizar la compilación usaremos los <code>loaders</code> de <code>webpack</code>. Los loaders se encargan de realizar ciertas operaciones 
- durante la creación del <code>bundle</code>.</p>
-<p>Primero instalamos los paquetes necesarios para la compilación:</p>
-<pre><code>yarn add babel-core babel-loader --dev
+                <h1 id="anadiendo-cordova-al-stack">Añadiendo Cordova al stack</h1>
+<p>Seguiremos adelante añadiendo Cordova al stack de herramientas. Teniendo instalado <a href="https://cordova.apache.org/docs/en/latest/guide/cli/"><code>cordova-cli</code></a>
+crearemos un proyecto:</p>
+<pre><code>cordova create hmrtutorial co.geomati.hmrtutorial HmrTutorial
 </code></pre>
-<p>y añadimos la configuración necesaria:</p>
-<pre><code> module: {
-     rules: [
-         {
-             test: /\.(js|jsx)$/,
-             exclude: [/node_modules/],
-             use: ['babel-loader'],
-         }
-     ],
+<p>Crearemos el proyecto fuera de nuestra carpeta de raiz, ya que de otra manera la <code>cordova-cli</code> dará un error. Después moveremos
+la estructura del proyecto <code>cordova</code> creado a nuestro raíz, quedando de la siguiente manera:</p>
+<p><img alt="" src="../_images/cordova_project.png" /></p>
+<p>Atendiendo un poco a como funciona <code>cordova</code>, deberemos modificar ligeramente la estructura de nuestro proyecto para adecuarnos 
+a esta tecnología. Un proyecto <code>cordova</code> dispone de una carpeta <code>www</code> donde se encuentra lo que será la aplicación que acabe
+mostrandose en la <code>webView</code>. <code>cordova</code> durante el proceso de <code>build</code> copia el contenido de la carpeta <code>www</code> a la carpeta
+<code>&lt;platform&gt;/assets/www</code> de la plataforma que estemos construyendo. Teniendo esto en cuenta, deberemos apuntar la salida de nuestro
+<code>webpack</code> a la carpeta <code>www</code> eliminando la carpeta <code>dist</code>.</p>
+<p>Eliminaremos <strong>todo</strong> el contenido de la carpeta <code>www</code> generado por <code>cordova</code>, y moveremos el <code>dist/index.html</code> a la carpeta
+ <code>www</code>. Ahora modificaremos el <code>webpack.config.js</code> para que la salida apunte a esta carpeta <code>www</code>:</p>
+<pre><code> output: {
+     path: path.resolve(__dirname, 'www/js'),
+     filename: '[name].js',
+     publicPath: "/js/"
  },
+
+ ...
+
+devServer: {
+    contentBase: path.join(__dirname, "www"),
+    hot: true, // Tell the dev-server we're using HMR,
+    compress: true,
+    port: 3000,
+    publicPath: "/js/"
+},
 </code></pre>
-<ul>
-<li><code>module</code>: se encarga de definir los típos de módulos que tenemos dentro del proyecto y nos permite configurar diferentes
- tratamientos.</li>
-<li><code>rules</code>: reglas que aplicarán configuraciones sobre aquellos módulos que las cumplan. Se trata de un <code>Array</code> en el que se van incluyendo
- las diferentes reglas</li>
-</ul>
-<p>Una <code>rule</code> viene definida por un objeto que a su vez tiene unas propiedades, en nuestro caso:</p>
-<ul>
-<li><code>test</code>: la regla que se aplicará a los recursos, en nuestro caso es una expresión regular que aplica la configuración 
- definida a los archivos con extensión <code>.js</code> o <code>.jsx</code>. <a href="https://webpack.js.org/configuration/module/#condition">Documentación Oficial</a></li>
-<li><code>exclude</code>: <strong>NO</strong> se aplica a los recursos que cumplan la condición, en nuestro caso que se encuentren en el path <code>node_modules</code>
- evitando así la compilación de los archivos que se encuentran en esa carpeta</li>
-<li><code>use</code>: listado de <code>loaders</code> que serán aplicados a los recursos</li>
-</ul>
-<p>Ahora nuestro código estará preparado para los navegadores que no implementen todavía ES6.</p>
+<p>Para probar de nuevo nuestra <code>App</code> pero esta vez en entorno móvil, primero deberemos añadir una <a href="https://cordova.apache.org/docs/en/latest/guide/cli/#add-platforms"><code>platform</code></a>
+Añadiremos la plataforma de Android:</p>
+<pre><code>$ cordova platform add android
+</code></pre>
+<p>Tras esto, veremos que se ha añadido contenido a la carpeta <code>platforms</code>. Si navegamos por el directorio <code>platforms/android/assets/www</code>
+veremos que se ha replicado el contenido de nuestra carpeta <code>www</code> y además aparecen varios archivos y directorios que necesita
+<code>cordova</code>.</p>
+<p><img alt="" src="../_images/platforms.png" /></p>
+<p>Si arrancamos la aplicación en un terminal:</p>
+<pre><code>$ cordova run android
+</code></pre>
+<p>Tendremos nuestra <code>App</code> en el terminal:</p>
+<p><img alt="" src="../_images/terminal.png" /></p>
+<p>Si queremos debugar nuestra <code>App</code> corriendo en el terminal, utilizaremos las herramientas de desarrollo de Chrome. Navegamos a
+la url <a href="chrome://inspect">chrome://inspect</a> y veremos que aparece nuestra <code>WebView</code>:</p>
+<p><img alt="" src="../_images/device_inspect.png" /></p>
+<p>si pulsamos sobre <code>inspect</code> podremos ver la consola de desarrollo para nuestra <code>App</code> cargada en el terminal</p>
+<p><img alt="" src="../_images/app_inspect.png" /></p>
+<p>¿Qué pasa si ahora modificamos el texto de nuestro botón?. Veremos que no sucede nada en el terminal, ya que lo que estamos
+viendo es una versión "construida" de lo que existe en nuestra carpeta <code>www</code>, ya que en el <code>build</code> de <code>cordova</code> se copia 
+el contenido a la carpeta de la plataforma y se empaqueta en el archivo que será instalado en el terminal. </p>
+<p>Desde el inspect podremos debugar sobre el código fuente de nuestra <code>App</code>, pero cada cambio deberá ser primero compilado
+por <code>webpack</code>:</p>
+<pre><code>$ npm run build
+</code></pre>
+<p>y luego construido e instalado en el terminal:</p>
+<pre><code>$ cordova run android
+</code></pre>
+<p>algo que puede ser sumamente tedioso en función del tamaño de nuestra app.</p>
+<p>Pero, ¿no podemos desarrollar en web, donde tenemos las herramientas de desarrollo habituales y luego empaquetar para usar en el 
+terminal?, si, en muchas casos esa es la estrategia a utilizar, pero cuando empezamos a hacer uso de <code>plugins</code> de <code>cordova</code>
+nos surge el problema de que necesitaremos emuladores de esos plugins en entorno <code>web</code>, y en muchos casos estos no existen o 
+estás desactualizados.</p>
+<p>Hasta ahora lo más funcional es <a href="https://github.com/Microsoft/cordova-simulate"><code>Cordova-Simulate</code></a> que simula un entorno 
+<code>cordova</code> en la web.</p>
                 
                   
                 
@@ -318,7 +348,7 @@
     <div class="md-footer-nav">
       <nav class="md-footer-nav__inner md-grid">
         
-          <a href="../webpackdevserver/" title="Instalación y configuración de webpack-dev-server" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+          <a href="../vendor/" title="Code Splitting" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
             <div class="md-flex__cell md-flex__cell--shrink">
               <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
             </div>
@@ -327,25 +357,11 @@
                 <span class="md-footer-nav__direction">
                   Previous
                 </span>
-                Instalación y configuración de webpack-dev-server
+                Code Splitting
               </span>
             </div>
           </a>
         
-        
-          <a href="../hrm/" title="Configurando Hot Module Replacement" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
-            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
-              <span class="md-flex__ellipsis">
-                <span class="md-footer-nav__direction">
-                  Next
-                </span>
-                Configurando Hot Module Replacement
-              </span>
-            </div>
-            <div class="md-flex__cell md-flex__cell--shrink">
-              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
-            </div>
-          </a>
         
       </nav>
     </div>
