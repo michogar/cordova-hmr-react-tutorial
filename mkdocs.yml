@@ -8,3 +8,4 @@ pages:
 - Configurando Hot Module Replacement: hrm.md
 - OnsenUI, React, babel-preset-react y react-hot-loader: react.md
 - Code Splitting: vendor.md
+- Añadiendo Cordova al stack: cordova.md

@@ -34,7 +34,7 @@ module.exports = {
         vendor: ['onsenui', 'react', 'react-dom', 'react-onsenui']
     },
     output: {
-        path: path.resolve(__dirname, 'dist/js'),
+        path: path.resolve(__dirname, 'www/js'),
         filename: '[name].js',
         publicPath: "/js/"
     },
@@ -53,12 +53,12 @@ module.exports = {
             },
             {
                 test: /\.(ttf|otf|eot|svg|woff(2)?)(\?[a-z0-9]+)?$/,
-                loader: 'file-loader?name=assets/[name].[ext]'
+                loader: 'file-loader?name=../assets/[name].[ext]'
             }
         ],
     },
     devServer: {
-        contentBase: path.join(__dirname, "dist"),
+        contentBase: path.join(__dirname, "www"),
         hot: true, // Tell the dev-server we're using HMR,
         compress: true,
         port: 3000,

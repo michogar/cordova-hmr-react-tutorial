@@ -1,5 +1,7 @@
 .idea/
 node_modules/
-dist/
-!dist/index.html
+www/
+!www/index.html
 site/
+/platforms/
+/plugins/
