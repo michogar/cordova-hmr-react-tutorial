@@ -8,3 +8,4 @@ Pequeño tutorial sobre configuración de Webpack, webpack-dev-server, ES6, Reac
 * [OnsenUI, React, babel-preset-react y react-hot-loader](react/)
 * [Code splitting](vendor/)
 * [Añadiendo Cordova al stack](cordova/)
+* [HMR en Cordova](hmr_cordova/)

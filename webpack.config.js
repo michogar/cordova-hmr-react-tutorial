@@ -34,7 +34,7 @@ module.exports = {
         vendor: ['onsenui', 'react', 'react-dom', 'react-onsenui']
     },
     output: {
-        path: path.resolve(__dirname, 'www/js'),
+        path: path.resolve(__dirname, 'platforms/android/assets/www/js'),
         filename: '[name].js',
         publicPath: "/js/"
     },
@@ -58,11 +58,12 @@ module.exports = {
         ],
     },
     devServer: {
-        contentBase: path.join(__dirname, "www"),
+        contentBase: path.join(__dirname, "platforms/android/assets/www"),
         hot: true, // Tell the dev-server we're using HMR,
         compress: true,
         port: 3000,
-        publicPath: "/js/"
+        publicPath: "/js/",
+        disableHostCheck: true,
     },
     plugins: plugins
 };
