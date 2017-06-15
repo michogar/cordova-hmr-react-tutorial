@@ -15,7 +15,7 @@
     
     
       
-        <title>Añadiendo Cordova al stack - HMR Tutorial</title>
+        <title>HMR en Cordova - HMR Tutorial</title>
       
     
     
@@ -72,7 +72,7 @@
             
               
             
-            Añadiendo Cordova al stack
+            HMR en Cordova
           
         </span>
       </div>
@@ -219,6 +219,18 @@
       
       
 
+
+  <li class="md-nav__item">
+    <a href="../cordova/" title="Añadiendo Cordova al stack" class="md-nav__link">
+      Añadiendo Cordova al stack
+    </a>
+  </li>
+
+    
+      
+      
+      
+
   
 
 
@@ -229,22 +241,10 @@
       
     
     
-    <a href="./" title="Añadiendo Cordova al stack" class="md-nav__link md-nav__link--active">
-      Añadiendo Cordova al stack
-    </a>
-    
-  </li>
-
-    
-      
-      
-      
-
-
-  <li class="md-nav__item">
-    <a href="../hmr_cordova/" title="HMR en Cordova" class="md-nav__link">
+    <a href="./" title="HMR en Cordova" class="md-nav__link md-nav__link--active">
       HMR en Cordova
     </a>
+    
   </li>
 
     
@@ -276,72 +276,141 @@
               
                 
                 
-                <h1 id="anadiendo-cordova-al-stack">Añadiendo Cordova al stack</h1>
-<p>Seguiremos adelante añadiendo Cordova al stack de herramientas. Teniendo instalado <a href="https://cordova.apache.org/docs/en/latest/guide/cli/"><code>cordova-cli</code></a>
-crearemos un proyecto:</p>
-<pre><code>cordova create hmrtutorial co.geomati.hmrtutorial HmrTutorial
-</code></pre>
-<p>Crearemos el proyecto fuera de nuestra carpeta de raiz, ya que de otra manera la <code>cordova-cli</code> dará un error. Después moveremos
-la estructura del proyecto <code>cordova</code> creado a nuestro raíz, quedando de la siguiente manera:</p>
-<p><img alt="" src="../_images/cordova_project.png" /></p>
-<p>Atendiendo un poco a como funciona <code>cordova</code>, deberemos modificar ligeramente la estructura de nuestro proyecto para adecuarnos 
-a esta tecnología. Un proyecto <code>cordova</code> dispone de una carpeta <code>www</code> donde se encuentra lo que será la aplicación que acabe
-mostrandose en la <code>webView</code>. <code>cordova</code> durante el proceso de <code>build</code> copia el contenido de la carpeta <code>www</code> a la carpeta
-<code>&lt;platform&gt;/assets/www</code> de la plataforma que estemos construyendo. Teniendo esto en cuenta, deberemos apuntar la salida de nuestro
-<code>webpack</code> a la carpeta <code>www</code> eliminando la carpeta <code>dist</code>.</p>
-<p>Eliminaremos <strong>todo</strong> el contenido de la carpeta <code>www</code> generado por <code>cordova</code>, y moveremos el <code>dist/index.html</code> a la carpeta
- <code>www</code>. Ahora modificaremos el <code>webpack.config.js</code> para que la salida apunte a esta carpeta <code>www</code>:</p>
-<pre><code> output: {
-     path: path.resolve(__dirname, 'www/js'),
-     filename: '[name].js',
-     publicPath: "/js/"
- },
+                <h1 id="hmr-en-cordova">HMR en Cordova</h1>
+<p>El objetivo ahora es poder utilizar HRM y <code>react-hot-loader</code> pero con la <code>App</code> corriendo en el terminal, y así poder acceder
+a una funcionalidad de los plugins en entorno real. </p>
+<p>Si recordamos de la instalación anterior, arrancando <code>webpack-dev-server</code> tendremos un entorno servidor web con nuestra 
+<code>App</code> corriendo y con las herramientas anteriores configuradas. Podremos acceder a esta desde la url <a href="http://localhost:3000/">http://localhost:3000/</a></p>
+<p><code>cordova</code> levanta una <code>WebView</code> sobre la que lanza el archivo <code>index.html</code> que está en la carpeta <code>platforms/android/assets/www</code>. 
+Si vamos hasta el código de la plataforma que ha creado <code>cordova</code>, navegando hasta <code>platforms/android/src/co/hmrtutorial/</code> 
+veremos la <code>MainActivity.java</code> donde se encuentra el código que lanza la <code>WebView</code>:</p>
+<pre><code>public class MainActivity extends CordovaActivity
+{
+    @Override
+    public void onCreate(Bundle savedInstanceState)
+    {
+        super.onCreate(savedInstanceState);
 
- ...
+        // enable Cordova apps to be started in the background
+        Bundle extras = getIntent().getExtras();
+        if (extras != null &amp;&amp; extras.getBoolean("cdvStartInBackground", false)) {
+            moveTaskToBack(true);
+        }
+
+        // Set by &lt;content src="index.html" /&gt; in config.xml
+        loadUrl(launchUrl);
+    }
+}
+</code></pre>
+<p>El método <code>loadUrl(launchUrl)</code> es el que abre el <code>index.html</code>, y como se indica en el mismo código, se configura modificando
+el <code>config.xml</code>, el archivo que crea <code>cordova</code> para definir las propiedades de la aplicación.</p>
+<p>Si navegamos hasta ese archivo veremos que como se indica en el código, nuestra <code>App</code> está apuntando al <code>index.html</code>, que será
+el que se encuentra en la carpeta <code>platforms/assets/www/</code>:</p>
+<pre><code>&lt;content src="index.html" /&gt;
+</code></pre>
+<p>Podremos modificar ese <code>content</code> para que apunte a la url de nuestro servidor. Para ello deberemos tener el <code>webpack-dev-server</code>
+configurado para que se pueda ver desde IP's que pertenezcan a nuestra misma red, añadiendole <code>--host 0.0.0.0</code> al arrancar:</p>
+<pre><code>"dev": "webpack-dev-server --host 0.0.0.0",
+</code></pre>
+<p>Buscaremos la IP de red de nuestro equipo y añadiremos esta IP junto con el puerto, de la manera <code>http://&lt;ip&gt;:&lt;puerto&gt;</code> al <code>content</code> de nuestro <code>config.xml</code>:</p>
+<pre><code>&lt;content src="http://192.168.0.16:3000" /&gt;
+</code></pre>
+<p>Ahora arrancaremos de nuevo nuestra <code>App</code> en el terminal, y:</p>
+<p><img alt="" src="../_images/invalid_host_header.png" /></p>
+<p>Para solucionar este problema deberemos <a href="https://github.com/webpack/webpack-dev-server/issues/882">añadir una nueva propiedad</a> 
+a nuestro <code>webpack-dev-server</code>:</p>
+<pre><code>disableHostCheck: true,
+</code></pre>
+<p>Ahora tendremos corriendo nuestra <code>App</code> dentro del terminal HMR y <code>react-hot-loader</code> pero, ¿qué pasa con <code>cordova</code>?.
+Para comprobar que pasa con <code>cordova</code> añadiremos un plugin a nuestra <code>App</code>, por ejemplo el  <a href="https://cordova.apache.org/docs/en/latest/reference/cordova-plugin-device/"><code>device</code></a> 
+que nos permite acceder a la información del terminal sobre el que corre nuestra <code>App</code>. Para ello:</p>
+<pre><code>$ cordova plugin add cordova-plugin-device --save
+</code></pre>
+<p>Añadiremos la funcionalidad que hace uso del plugin:</p>
+<pre><code>class App extends Component {
+
+    constructor(props) {
+        super(props)
+        this.state = {
+            sum: 0,
+            isOpen: false
+        }
+    }
+
+    handleClick() {
+        this.setState({
+            sum: this.state.sum += 2
+        })
+    }
+
+    handleInfo() {
+        this.setState({
+            isOpen: true
+        })
+    }
+
+    render() {
+        return (
+            &lt;Page renderModal={() =&gt; (&lt;Modal isOpen={this.state.isOpen}&gt;
+                &lt;section style={{margin: '16px'}}&gt;
+                    &lt;p style={{opacity: 0.6}}&gt;
+                        { device.model }
+                    &lt;/p&gt;
+                    &lt;p&gt;
+                        &lt;Button onClick={() =&gt; this.setState({isOpen: false})}&gt;
+                            Close
+                        &lt;/Button&gt;
+                    &lt;/p&gt;
+                &lt;/section&gt;
+            &lt;/Modal&gt;)}&gt;
+                &lt;Button onClick={this.handleClick.bind(this)}&gt;Suma = {this.state.sum}&lt;/Button&gt;
+                &lt;Button onClick={this.handleInfo.bind(this)}&gt;Muestra info&lt;/Button&gt;
+            &lt;/Page&gt;
+        );
+    };
+}
+
+export default App;
+</code></pre>
+<p>Y al actualizar la <code>App</code> en el terminal, nos dará un error:</p>
+<p><img alt="" src="../_images/device_error.png" /></p>
+<p><code>cordova</code> crea los plugins como objetos globales, por lo que la linea:</p>
+<pre><code>{ device.model }
+</code></pre>
+<p>está generando un error <code>ReferenceError: device is not defined</code>, ya que nuestra <code>App</code> no está haciendo uso de la funcionlidad 
+de <code>cordova</code> sino que simplemente estś siendo mostrada embebida un <code>WebView</code> dentro de nuestro terminal.</p>
+<p>Si comparamos el <code>index.html</code> generado por <code>cordova</code> comparado con el que hemos ido generando nosotros, veremos que nos
+falta una referencia a <code>cordova.js</code> que es la librería que da acceso a la funcionalidad de <code>cordova</code>. Si incluimos este archivo 
+en nuestro <code>index.html</code>:</p>
+<pre><code>&lt;script type="text/javascript" src="cordova.js"&gt;&lt;/script&gt;
+</code></pre>
+<p>obtendremos un error:</p>
+<p><img alt="" src="../_images/cordova_error.png" /></p>
+<p>Esto es porque ese archivo se ha creado en la carpeta de la <code>platform</code> ya que es diferente para cada plataforma. Podremos 
+copiar el archivo y los demás archivos que necesita nuestra <code>App</code> de <code>cordova</code> a la carpeta <code>www</code> o podemos apuntar el <code>contentBase</code>
+de nuestro <code>webpack-dev-server</code> para que sirva los contenidos de la carpeta donde se encuentra ese archivo. Modificaremos 
+en el <code>webpack.config.js</code>:</p>
+<pre><code>output: {
+    path: path.resolve(__dirname, 'platforms/android/assets/www/js'),
+    filename: '[name].js',
+    publicPath: "/js/"
+},
+
+...
 
 devServer: {
-    contentBase: path.join(__dirname, "www"),
+    contentBase: path.join(__dirname, "platforms/android/assets/www"),
     hot: true, // Tell the dev-server we're using HMR,
     compress: true,
     port: 3000,
-    publicPath: "/js/"
+    publicPath: "/js/",
+    disableHostCheck: true,
 },
 </code></pre>
-<p>Para probar de nuevo nuestra <code>App</code> pero esta vez en entorno móvil, primero deberemos añadir una <a href="https://cordova.apache.org/docs/en/latest/guide/cli/#add-platforms"><code>platform</code></a>
-Añadiremos la plataforma de Android:</p>
-<pre><code>$ cordova platform add android
-</code></pre>
-<p>Tras esto, veremos que se ha añadido contenido a la carpeta <code>platforms</code>. Si navegamos por el directorio <code>platforms/android/assets/www</code>
-veremos que se ha replicado el contenido de nuestra carpeta <code>www</code> y además aparecen varios archivos y directorios que necesita
-<code>cordova</code>.</p>
-<p><img alt="" src="../_images/platforms.png" /></p>
-<p>Si arrancamos la aplicación en un terminal:</p>
-<pre><code>$ cordova run android
-</code></pre>
-<p>Tendremos nuestra <code>App</code> en el terminal:</p>
-<p><img alt="" src="../_images/terminal.png" /></p>
-<p>Si queremos debugar nuestra <code>App</code> corriendo en el terminal, utilizaremos las herramientas de desarrollo de Chrome. Navegamos a
-la url <a href="chrome://inspect">chrome://inspect</a> y veremos que aparece nuestra <code>WebView</code>:</p>
-<p><img alt="" src="../_images/device_inspect.png" /></p>
-<p>si pulsamos sobre <code>inspect</code> podremos ver la consola de desarrollo para nuestra <code>App</code> cargada en el terminal</p>
-<p><img alt="" src="../_images/app_inspect.png" /></p>
-<p>¿Qué pasa si ahora modificamos el texto de nuestro botón?. Veremos que no sucede nada en el terminal, ya que lo que estamos
-viendo es una versión "construida" de lo que existe en nuestra carpeta <code>www</code>, ya que en el <code>build</code> de <code>cordova</code> se copia 
-el contenido a la carpeta de la plataforma y se empaqueta en el archivo que será instalado en el terminal. </p>
-<p>Desde el inspect podremos debugar sobre el código fuente de nuestra <code>App</code>, pero cada cambio deberá ser primero compilado
-por <code>webpack</code>:</p>
-<pre><code>$ npm run build
-</code></pre>
-<p>y luego construido e instalado en el terminal:</p>
-<pre><code>$ cordova run android
-</code></pre>
-<p>algo que puede ser sumamente tedioso en función del tamaño de nuestra app.</p>
-<p>Pero, ¿no podemos desarrollar en web, donde tenemos las herramientas de desarrollo habituales y luego empaquetar para usar en el 
-terminal?, si, en muchas casos esa es la estrategia a utilizar, pero cuando empezamos a hacer uso de <code>plugins</code> de <code>cordova</code>
-nos surge el problema de que necesitaremos emuladores de esos plugins en entorno <code>web</code>, y en muchos casos estos no existen o 
-estás desactualizados.</p>
-<p>Hasta ahora lo más funcional es <a href="https://github.com/Microsoft/cordova-simulate"><code>Cordova-Simulate</code></a> que simula un entorno 
-<code>cordova</code> en la web.</p>
+<p>Ahora tendremos que la salida de nuestro <code>webpack</code> se servirá directamente desde la carpeta de la plataforma, por lo que no será
+necesario realizar un <code>build</code> de la misma.</p>
+<p>Y si realizamos la comprobación anterior, veremos que ahora si accede a los plugins:</p>
+<p><img alt="" src="../_images/device_z2.png" /></p>
                 
                   
                 
@@ -360,7 +429,7 @@ estás desactualizados.</p>
     <div class="md-footer-nav">
       <nav class="md-footer-nav__inner md-grid">
         
-          <a href="../vendor/" title="Code Splitting" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+          <a href="../cordova/" title="Añadiendo Cordova al stack" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
             <div class="md-flex__cell md-flex__cell--shrink">
               <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
             </div>
@@ -369,25 +438,11 @@ estás desactualizados.</p>
                 <span class="md-footer-nav__direction">
                   Previous
                 </span>
-                Code Splitting
+                Añadiendo Cordova al stack
               </span>
             </div>
           </a>
         
-        
-          <a href="../hmr_cordova/" title="HMR en Cordova" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
-            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
-              <span class="md-flex__ellipsis">
-                <span class="md-footer-nav__direction">
-                  Next
-                </span>
-                HMR en Cordova
-              </span>
-            </div>
-            <div class="md-flex__cell md-flex__cell--shrink">
-              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
-            </div>
-          </a>
         
       </nav>
     </div>
